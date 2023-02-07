@@ -18,6 +18,7 @@ Fine-tuning the library models for question answering.
 """
 # You can also adapt this script on your own question answering task. Pointers for this are left as comments.
 
+import wandb
 import json
 import logging
 import os
@@ -620,11 +621,16 @@ def main():
             model_path = model_args.model_name_or_path
         else:
             model_path = checkpoint
+        args = TrainingArguments(
+            report_to="wandb",  # enable logging to W&B
+            run_name="korquad-tpu"  # name of the W&B run (optional)
+        )
         model = TFAutoModelForQuestionAnswering.from_pretrained(
             model_path,
             config=config,
             cache_dir=model_args.cache_dir,
             revision=model_args.model_revision,
+            args=args,
             use_auth_token=True if model_args.use_auth_token else None,
         )
         if training_args.do_train:
