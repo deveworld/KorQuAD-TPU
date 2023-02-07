@@ -1,2 +1,2 @@
 # KorQuAD-TPU
-KorQuAD on TPU
+KorQuAD Qa model on TPU
