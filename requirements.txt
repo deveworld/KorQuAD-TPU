@@ -1,0 +1,4 @@
+wandb
+evaluate
+packaging>=20.9
+git+https://github.com/huggingface/transformers
