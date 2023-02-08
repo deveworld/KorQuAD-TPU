@@ -622,13 +622,13 @@ def main():
             model_path = model_args.model_name_or_path
         else:
             model_path = checkpoint
+        wandb.init("korquad_tpu")
         model = TFAutoModelForQuestionAnswering.from_pretrained(
             model_path,
             config=config,
             cache_dir=model_args.cache_dir,
             revision=model_args.model_revision,
             use_auth_token=True if model_args.use_auth_token else None,
-            model_args=training_args,
         )
         if training_args.do_train:
             training_dataset = model.prepare_tf_dataset(
@@ -800,4 +800,5 @@ def main():
 
 
 if __name__ == "__main__":
+    wandb.login()
     main()
