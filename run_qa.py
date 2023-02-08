@@ -196,10 +196,7 @@ class DataTrainingArguments:
         default="wandb",
         metadata={"help": "Report learning data."},
     )
-    run_name: str = field(
-        default="korquad-tpu",
-        metadata={"help": "Report name."},
-    )
+        
 
     def __post_init__(self):
         if (
