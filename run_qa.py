@@ -720,7 +720,7 @@ def main():
                 )
             ]
         else:
-            callbacks = [transformers.integrations.WandbCallback()]
+            callbacks = [wandb.keras.WandbCallback()]
         # endregion
 
         # region Training and Evaluation
