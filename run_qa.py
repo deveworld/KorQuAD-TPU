@@ -192,12 +192,8 @@ class DataTrainingArguments:
             )
         },
     )
-    report_to: str = field(
-        default="wandb",
-        metadata={"help": "Report learning data."},
-    )
-        
-
+    
+    
     def __post_init__(self):
         if (
             self.dataset_name is None
