@@ -628,7 +628,7 @@ def main():
             cache_dir=model_args.cache_dir,
             revision=model_args.model_revision,
             use_auth_token=True if model_args.use_auth_token else None,
-            args=training_args,
+            model_args=training_args,
         )
         if training_args.do_train:
             training_dataset = model.prepare_tf_dataset(
