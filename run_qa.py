@@ -192,11 +192,11 @@ class DataTrainingArguments:
             )
         },
     )
-    report_to: Optional[str] = field(
+    report_to: str = field(
         default="wandb",
         metadata={"help": "Report learning data."},
     )
-    run_name: Optional[str] = field(
+    run_name: str = field(
         default="korquad-tpu",
         metadata={"help": "Report name."},
     )
