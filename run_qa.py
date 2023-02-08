@@ -192,6 +192,14 @@ class DataTrainingArguments:
             )
         },
     )
+    report_to: Optional[str] = field(
+        default="wandb",
+        metadata={"help": "Report learning data."},
+    )
+    run_name: Optional[str] = field(
+        default="korquad-tpu",
+        metadata={"help": "Report name."},
+    )
 
     def __post_init__(self):
         if (
@@ -621,16 +629,11 @@ def main():
             model_path = model_args.model_name_or_path
         else:
             model_path = checkpoint
-        args = TFTrainingArguments(
-            report_to="wandb",  # enable logging to W&B
-            run_name="korquad-tpu"  # name of the W&B run (optional)
-        )
         model = TFAutoModelForQuestionAnswering.from_pretrained(
             model_path,
             config=config,
             cache_dir=model_args.cache_dir,
             revision=model_args.model_revision,
-            args=args,
             use_auth_token=True if model_args.use_auth_token else None,
         )
         if training_args.do_train:
