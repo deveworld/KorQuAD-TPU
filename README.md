@@ -22,6 +22,11 @@ If you really want to train this, get tpu at trc like me or pay for it at gcp.
 
 If you have a tensorflow tpu vm(it's really important, use vm not node), clone this repo and run following code.
 
-`python3 run_qa.py --model_name_or_path distilbert-base-cased-distilled-squad --output_dir OUTPUTDISK --dataset_name squad_kor_v2 --do_train --do_eval --tpu_name local --preprocessing_num_workers 10`
+`pip install -r requirements.txt`
+
+`WANDB_LOG_MODEL=KorQuAD-TPU-TEST` \
+For wandb
+
+`python3 run_qa.py --model_name_or_path distilbert-base-cased-distilled-squad --output_dir OUTPUTDISK --dataset_name squad_kor_v2 --do_train --do_eval --tpu_name local --preprocessing_num_workers 15`
 
 OUTPUTDISK must be a mounted disk from gcp compute disk.
