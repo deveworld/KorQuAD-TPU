@@ -720,7 +720,7 @@ def main():
                 )
             ]
         else:
-            callbacks = [wandb.keras.WandbCallback(log_batch_frequency=100, compute_flops=True, log_evaluation=True, log_evaluation_frequency=10)]
+            callbacks = [wandb.keras.WandbCallback(log_batch_frequency=100, compute_flops=True, log_evaluation=True, log_evaluation_frequency=10), SavePretrainedCallback(output_dir)]
         # endregion
 
         # region Training and Evaluation
