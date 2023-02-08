@@ -621,7 +621,7 @@ def main():
             model_path = model_args.model_name_or_path
         else:
             model_path = checkpoint
-        args = TrainingArguments(
+        args = TFTrainingArguments(
             report_to="wandb",  # enable logging to W&B
             run_name="korquad-tpu"  # name of the W&B run (optional)
         )
