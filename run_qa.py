@@ -222,12 +222,19 @@ class SavePretrainedCallback(tf.keras.callbacks.Callback):
     # Hugging Face models have a save_pretrained() method that saves both the weights and the necessary
     # metadata to allow them to be loaded as a pretrained model in future. This is a simple Keras callback
     # that saves the model with this method after each epoch.
-    def __init__(self, output_dir, **kwargs):
+    def __init__(self, output_dir, args, **kwargs):
         super().__init__()
         self.output_dir = output_dir
-
+        self.args = args
+        
+    def on_train_batch_end(self, batch, logs=None):
+        if self.args.save_strategy == "steps":
+            if batch % self.args.save_steps == 0:
+                self.model.save_pretrained(self.output_dir)
+    
     def on_epoch_end(self, epoch, logs=None):
-        self.model.save_pretrained(self.output_dir)
+        if self.args.save_strategy != "no":
+            self.model.save_pretrained(self.output_dir)
 
 
 # endregion
@@ -370,7 +377,7 @@ def main():
         column_names = datasets["test"].column_names
     question_column_name = "question" if "question" in column_names else column_names[0]
     context_column_name = "context" if "context" in column_names else column_names[1]
-    answer_column_name = "answers" if "answers" in column_names else column_names[2]
+    answer_column_name = "answers"
 
     # Padding side determines if we do (question|context) or (context|question).
     pad_on_right = tokenizer.padding_side == "right"
@@ -720,7 +727,18 @@ def main():
                 )
             ]
         else:
-            callbacks = [wandb.keras.WandbCallback(log_batch_frequency=100, compute_flops=True, log_evaluation=True, log_evaluation_frequency=10), SavePretrainedCallback(output_dir)]
+            callbacks = [
+                wandb.keras.WandbCallback(
+                    log_batch_frequency=100, 
+                    compute_flops=True, 
+                    log_evaluation=True, 
+                    log_evaluation_frequency=10
+                ), 
+                SavePretrainedCallback(
+                    output_dir,
+                    train_args,
+                ),
+            ]
         # endregion
 
         # region Training and Evaluation
