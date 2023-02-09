@@ -736,7 +736,7 @@ def main():
                 ), 
                 SavePretrainedCallback(
                     output_dir,
-                    train_args,
+                    training_args,
                 ),
             ]
         # endregion
