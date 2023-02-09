@@ -227,7 +227,9 @@ class SavePretrainedCallback(tf.keras.callbacks.Callback):
         super().__init__()
         self.output_dir = output_dir
         self.args = args
-        self.max = self.args.save_total_limit*self.args.save_steps
+        self.max = 1
+        if self.args.save_total_limit != None:
+            self.max = self.args.save_total_limit*self.args.save_steps
         
     def on_train_batch_end(self, batch, logs=None):
         if self.args.save_strategy == "steps":
@@ -235,7 +237,7 @@ class SavePretrainedCallback(tf.keras.callbacks.Callback):
                 output_dir = Path(self.output_dir).joinpath(str(batch))
                 output_dir.mkdir(parents=True, exist_ok=True)
                 self.model.save_pretrained(output_dir)
-            if batch >= self.max:
+            if self.args.save_total_limit != None and batch >= self.max:
                 delete_dir = Path(self.output_dir).joinpath(str(batch-self.max))
                 try:
                     shutil.rmtree(delete_dir)
