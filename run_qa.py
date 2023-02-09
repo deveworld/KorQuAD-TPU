@@ -32,6 +32,7 @@ import evaluate
 import tensorflow as tf
 from datasets import load_dataset
 from utils_qa import postprocess_qa_predictions
+from korquadevaluate import compute
 
 import transformers
 from transformers import (
@@ -770,7 +771,7 @@ def main():
             # standard Keras metrics, you can use our KerasMetricCallback. See
             # https://huggingface.co/docs/transformers/main/en/main_classes/keras_callbacks
 
-            eval_predictions = model.predict(eval_dataset)
+            eval_predictions = model.predict(eval_dataset, use_multiprocessing=True)
             if isinstance(eval_predictions.start_logits, tf.RaggedTensor):
                 # If predictions are RaggedTensor, we densify them. Since they are logits, padding with 0 is a bad idea!
                 # The reason is that a logit of 0 can often end up as quite a high probability value, sometimes even
