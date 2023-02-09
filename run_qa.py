@@ -23,6 +23,7 @@ import json
 import logging
 import os
 import sys
+import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
@@ -234,7 +235,7 @@ class SavePretrainedCallback(tf.keras.callbacks.Callback):
                 output_dir = Path(self.output_dir).joinpath(str(batch))
                 output_dir.mkdir(parents=True, exist_ok=True)
                 self.model.save_pretrained(output_dir)
-            if batch > self.max:
+            if batch >= self.max:
                 delete_dir = Path(self.output_dir).joinpath(str(batch-self.max))
                 try:
                     shutil.rmtree(delete_dir)
@@ -242,7 +243,7 @@ class SavePretrainedCallback(tf.keras.callbacks.Callback):
                     pass
                 
     def on_epoch_end(self, epoch, logs=None):
-        if self.args.save_strategy != "no":
+        if self.args.save_strategy == "epoch":
             self.model.save_pretrained(self.output_dir)
 
 
